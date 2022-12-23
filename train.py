@@ -255,28 +255,30 @@ def main(args):
 
 		# save model and checkpoint
 		training_params['start_epoch'] = epoch + 1
-		torch.save(model.state_dict(), os.path.join(args.log_dir, 'net.pth'))
-		save_dict = { \
-			'state_dict': model.state_dict(), \
-			'optimizer' : optimizer.state_dict(), \
-			'training_params': training_params, \
-			'args': args\
-			}
-		torch.save(save_dict, os.path.join(args.log_dir, 'ckpt.pth'))
 		if (epoch+1) % args.save_every_epochs == 0:
-			torch.save(save_dict, os.path.join(args.log_dir, \
-									  'ckpt_e{}.pth'.format(epoch+1)))
+			torch.save(model.state_dict(), os.path.join(args.log_dir, 'net{}.pth'.format(epoch+1)))
+		
+# 		save_dict = { \
+# 			'state_dict': model.state_dict(), \
+# 			'optimizer' : optimizer.state_dict(), \
+# 			'training_params': training_params, \
+# 			'args': args\
+# 			}
+# 		torch.save(save_dict, os.path.join(args.log_dir, 'ckpt.pth'))
+# 		if (epoch+1) % args.save_every_epochs == 0:
+# 			torch.save(save_dict, os.path.join(args.log_dir, \
+# 									  'ckpt_e{}.pth'.format(epoch+1)))
 		del save_dict
 
 
 	# 保存为csv文件
 	dict_loss={'loss_train':loss_train_value,'loss_val':loss_val_value}
 	df_loss=pd.DataFrame(dict_loss)
-	df_loss.to_csv('/content/quzaonet/df_loss.csv')
+	df_loss.to_csv('/kaggle/working/df_loss.csv')
 
 	dict_psnr = {'psnr_train': psnr_train_value, 'psnr_val': psnr_val_value}
 	df_psnr = pd.DataFrame(dict_psnr)
-	df_psnr.to_csv('/content/quzaonet/df_psnr.csv')
+	df_psnr.to_csv('/kaggle/working/df_psnr.csv')
 
 if __name__ == "__main__":
 
